@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lustre Auto — Esthétique automobile à Montréal</title>
+<meta name="description" content="Lavage, esthétique intérieure et extérieure, cire et céramique. Au garage ou à domicile. Prix selon votre véhicule et réservation en ligne.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2f3f5; --paper:#fff; --ink:#111418; --ink2:#4d5562; --muted:#8a93a0; --line:#dfe2e7;
+    --red:#e10600; --red2:#b80500; --dark:#111418; --dark2:#1b1f25; --soft:#fde9e8; --green:#1f9d55; --r:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{overflow-x:hidden;overflow-x:clip;max-width:100%}
+  body{font-family:'Barlow',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.logo,.price,.big-num{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1}
+  button,input{font-family:inherit;font-size:1rem}
+  .wrap{width:min(1140px,100% - 40px);margin:auto}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:600;text-decoration:none;cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.06em;font-size:.92rem}
+  .btn:hover{background:var(--red2);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border:1.5px solid currentColor;color:inherit}
+  .btn.ghost:hover{background:#fff;color:var(--ink)}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+  .eyebrow::before{content:'';width:22px;height:2px;background:var(--red)}
+  section{padding:90px 0}
+  .head{max-width:640px;margin-bottom:40px}
+  .head h2{font-size:clamp(2.4rem,5vw,3.6rem)}
+  .head p{color:var(--ink2);margin-top:12px;font-size:1.05rem}
+
+  nav{position:sticky;top:0;z-index:30;background:rgba(17,20,24,.92);backdrop-filter:blur(12px);color:#fff}
+  nav .wrap{display:flex;align-items:center;gap:28px;height:68px}
+  .logo{font-size:1.7rem;font-style:italic;text-decoration:none;color:#fff;display:flex;align-items:center;gap:10px}
+  .logo span{color:var(--red)}
+  .links{display:flex;gap:26px;margin-left:auto}
+  .links a{color:#c7ccd4;text-decoration:none;font-size:.92rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .links a:hover{color:#fff}
+  nav .btn{padding:11px 20px;white-space:nowrap}
+
+  .hero{background:radial-gradient(ellipse at 70% 30%,#2a2f37 0%,var(--dark) 60%);color:#fff;padding:70px 0 0;overflow:hidden}
+  .hero .wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:30px;align-items:center}
+  .hero h1{font-size:clamp(3.2rem,8vw,6.2rem);font-style:italic}
+  .hero h1 span{color:var(--red)}
+  .hero p{color:#c7ccd4;font-size:1.12rem;margin:20px 0 28px;max-width:470px}
+  .ctas{display:flex;gap:12px;flex-wrap:wrap}
+  .pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+  .pills span{border:1px solid #333a44;border-radius:50px;padding:7px 14px;font-size:.85rem;color:#c7ccd4}
+  .car{position:relative}
+  .car svg{width:100%;display:block}
+  .shine{animation:shine 4s ease-in-out infinite}
+  @keyframes shine{0%{transform:translateX(-120%)}60%,100%{transform:translateX(220%)}}
+  .stats{background:var(--red);color:#fff}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:22px 0}
+  .stats div{display:flex;align-items:baseline;gap:10px}
+  .big-num{font-size:2.4rem}
+  .stats small{font-size:.88rem;opacity:.9}
+
+  /* Véhicule */
+  .veh{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:5px;gap:4px;margin-bottom:26px;flex-wrap:wrap}
+  .veh button{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;border:none;background:transparent;cursor:pointer;font-weight:600;color:var(--ink2)}
+  .veh button.on{background:var(--ink);color:#fff}
+  .packs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .pack{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;position:relative;transition:.25s}
+  .pack:hover{transform:translateY(-4px);box-shadow:0 22px 40px -26px rgba(17,20,24,.45)}
+  .pack.hot{border:2px solid var(--red)}
+  .pack .flag{position:absolute;top:-12px;left:22px;background:var(--red);color:#fff;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:6px}
+  .pack h3{font-size:1.7rem}
+  .pack .dur{color:var(--muted);font-size:.86rem;margin:4px 0 14px}
+  .price{font-size:2.8rem;margin-bottom:16px}
+  .price small{font-size:1rem;color:var(--muted);font-family:'Barlow';font-weight:400;text-transform:none}
+  .pack ul{list-style:none;display:grid;gap:8px;margin-bottom:22px;flex:1}
+  .pack li{display:flex;gap:10px;font-size:.93rem;color:var(--ink2)}
+  .pack li::before{content:'✓';color:var(--red);font-weight:700}
+  .pack .btn{width:100%}
+
+  /* Réservation */
+  .book{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:start}
+  .book>*,.form>*{min-width:0}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px}
+  .form{display:grid;gap:26px}
+  .step{display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed';font-weight:700;font-size:1.3rem;text-transform:uppercase;margin-bottom:12px}
+  .step b{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:.95rem}
+  .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .opt{padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;text-align:left;color:var(--ink);transition:.15s}
+  .opt b{display:block;font-size:.95rem}
+  .opt small{color:var(--muted);font-size:.8rem}
+  .opt.on{border-color:var(--red);background:var(--soft)}
+  .opts.two{grid-template-columns:1fr 1fr}
+  .opts.four{grid-template-columns:1fr 1fr}
+  .opt.check{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .opt.check::after{content:'';flex:0 0 20px;height:20px;border-radius:5px;border:1.5px solid var(--line);background:#fff}
+  .opt.check.on::after{content:'✓';background:var(--red);border-color:var(--red);color:#fff;display:grid;place-items:center;font-size:.8rem;font-weight:700}
+  .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;max-width:100%}
+  .day{flex:0 0 62px;padding:9px 0;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;text-align:center;color:var(--ink)}
+  .day small{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;font-weight:600}
+  .day b{font-family:'Barlow Condensed';font-size:1.5rem}
+  .day.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .day.on small{color:#aab1bb}
+  .day:disabled{opacity:.3;cursor:not-allowed}
+  .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+  .slot{padding:10px 4px;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;font-size:.9rem;font-weight:600;color:var(--ink)}
+  .slot:hover:not(:disabled){border-color:var(--red)}
+  .slot.on{background:var(--red);border-color:var(--red);color:#fff}
+  .slot:disabled{opacity:.35;cursor:not-allowed}
+  .slot.taken{opacity:.5;text-decoration:line-through}
+  .slot.taken small{display:block;text-decoration:none;font-size:.66rem;color:var(--red)}
+  .hint{color:var(--muted);font-size:.92rem;grid-column:1/-1}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{font-size:.86rem;font-weight:600;display:block;margin-bottom:6px}
+  input{width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+  input:focus{outline:none;border-color:var(--ink);background:#fff}
+  input.err{border-color:var(--red)}
+  .err{color:var(--red);font-size:.9rem;display:none}
+
+  .recap{position:sticky;top:88px;background:var(--dark);color:#fff;border-radius:20px;padding:26px}
+  .recap h3{font-size:1.7rem;margin-bottom:16px}
+  .recap .line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #2a3038;font-size:.94rem;color:#c7ccd4}
+  .recap .line b{color:#fff;font-weight:600;text-align:right}
+  .recap .total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px}
+  .recap .total .price{margin:0;font-size:2.6rem}
+  .recap .dep{margin-top:10px;font-size:.88rem;color:#aab1bb}
+  .recap .btn{width:100%;margin-top:20px}
+  .recap .empty{color:#8a93a0;font-size:.94rem}
+
+  .confirm{display:none;text-align:center;padding:20px 0}
+  .confirm .ok{width:74px;height:74px;border-radius:50%;background:#e3f5ea;color:var(--green);display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
+  .confirm h3{font-size:2.4rem;margin-bottom:8px}
+  .confirm p{color:var(--ink2)}
+  .confirm .ref{display:inline-block;margin:12px 0;padding:6px 14px;border-radius:8px;background:var(--bg);font-weight:600}
+
+  .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+  summary::after{content:'+';color:var(--red);font-size:1.3rem;line-height:1}
+  details[open] summary::after{content:'–'}
+  details p{color:var(--ink2);margin-top:10px;font-size:.94rem}
+  footer{background:var(--dark);color:#8a93a0;padding:36px 0;font-size:.88rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  .fab{position:fixed;right:22px;bottom:22px;z-index:40;width:60px;height:60px;border-radius:50%;border:none;background:var(--red);color:#fff;font-size:1.5rem;cursor:pointer;box-shadow:0 14px 30px -10px rgba(225,6,0,.7);transition:.2s}
+  .fab:hover{transform:scale(1.06)}
+  .chat{position:fixed;right:22px;bottom:94px;z-index:40;width:min(370px,calc(100% - 28px));height:min(540px,calc(100vh - 130px));background:#fff;border-radius:18px;box-shadow:0 30px 70px -20px rgba(17,20,24,.5);display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px) scale(.96);opacity:0;pointer-events:none;transition:.25s}
+  .chat.open{transform:none;opacity:1;pointer-events:auto}
+  .chat header{background:var(--dark);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+  .chat header .av{width:40px;height:40px;border-radius:10px;background:var(--red);display:grid;place-items:center;font-size:1.2rem}
+  .chat header b{display:block;font-family:'Barlow Condensed';text-transform:uppercase;font-size:1.2rem}
+  .chat header small{color:#7fd9a3;font-size:.78rem}
+  .chat header button{margin-left:auto;background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
+  .msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+  .m{max-width:85%;padding:11px 14px;border-radius:14px;font-size:.93rem;line-height:1.45}
+  .m.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+  .m.me{background:var(--ink);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+  .typing{display:flex;gap:4px;padding:14px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:b 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+  @keyframes b{50%{transform:translateY(-4px);opacity:.4}}
+  .quick{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line)}
+  .quick button{padding:7px 12px;border-radius:50px;border:1px solid var(--line);background:var(--bg);font-size:.82rem;cursor:pointer}
+  .chat form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+  .chat form input{flex:1;border-radius:50px}
+  .chat form button{width:44px;border-radius:50%;border:none;background:var(--red);color:#fff;font-size:1.1rem;cursor:pointer}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:900px){
+    .links{display:none}
+    nav .btn{margin-left:auto}
+    .hero .wrap,.book,.faq{grid-template-columns:1fr}
+    .packs{grid-template-columns:1fr 1fr}
+    .stats .wrap{grid-template-columns:1fr 1fr}
+    .recap{position:static}
+  }
+  @media (max-width:600px){
+    section{padding:64px 0}
+    .packs{grid-template-columns:1fr}
+    .opts,.row2{grid-template-columns:1fr}
+    .opts.two,.opts.four{grid-template-columns:1fr}
+    .panel{padding:20px}
+    .veh{display:grid;grid-template-columns:repeat(3,1fr);width:100%}
+    .veh button{justify-content:center;padding:10px 6px}
+    .logo{font-size:1.45rem}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo">LUSTRE <span>AUTO</span></a>
+    <div class="links"><a href="#forfaits">Forfaits</a><a href="#reserver">Réserver</a><a href="#faq">FAQ</a></div>
+    <a href="#reserver" class="btn">Réserver</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Esthétique automobile · Montréal</span>
+      <h1>Comme neuve. <span>Encore.</span></h1>
+      <p>Lavage à la main, intérieur en profondeur, cire et protection céramique. On vient chez vous ou vous venez au garage. Le prix est affiché selon votre véhicule.</p>
+      <div class="ctas"><a href="#forfaits" class="btn">Voir les prix</a><a href="#reserver" class="btn ghost">Réserver</a></div>
+      <div class="pills"><span>🚗 Au garage</span><span>📍 À domicile</span><span>🧴 Produits sans danger</span></div>
+    </div>
+    <div class="car reveal">
+      <svg viewBox="0 0 600 340" aria-label="Voiture brillante">
+        <defs>
+          <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b30"/><stop offset=".55" stop-color="#c40500"/><stop offset="1" stop-color="#7a0300"/></linearGradient>
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fb6cc"/><stop offset="1" stop-color="#2a3440"/></linearGradient>
+          <linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <clipPath id="carclip"><path d="M60 230 C60 200 80 186 120 180 L190 172 L250 118 C262 108 280 102 300 102 L390 102 C414 102 430 110 446 124 L500 172 L540 182 C566 190 576 206 576 228 L576 250 L60 250 Z"/></clipPath>
+        </defs>
+        <ellipse cx="318" cy="292" rx="270" ry="22" fill="#000" opacity=".45"/>
+        <path d="M60 230 C60 200 80 186 120 180 L190 172 L250 118 C262 108 280 102 300 102 L390 102 C414 102 430 110 446 124 L500 172 L540 182 C566 190 576 206 576 228 L576 250 L60 250 Z" fill="url(#body)"/>
+        <path d="M206 172 L258 126 C266 119 278 116 292 116 L318 116 L318 172 Z" fill="url(#glass)"/>
+        <path d="M332 116 L388 116 C404 116 416 121 428 132 L470 172 L332 172 Z" fill="url(#glass)"/>
+        <path d="M90 214 L560 214" stroke="#ff7a73" stroke-width="2" opacity=".6"/>
+        <rect x="540" y="196" width="30" height="12" rx="4" fill="#ffe9a8"/>
+        <rect x="64" y="200" width="22" height="12" rx="4" fill="#ff8a80"/>
+        <g clip-path="url(#carclip)"><rect class="shine" x="0" y="80" width="140" height="200" fill="url(#sh)" transform="skewX(-20)"/></g>
+        <g><circle cx="170" cy="252" r="44" fill="#14171b"/><circle cx="170" cy="252" r="26" fill="#9aa3ad"/><circle cx="170" cy="252" r="8" fill="#14171b"/></g>
+        <g><circle cx="470" cy="252" r="44" fill="#14171b"/><circle cx="470" cy="252" r="26" fill="#9aa3ad"/><circle cx="470" cy="252" r="8" fill="#14171b"/></g>
+        <g fill="#fff"><path d="M520 70 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z" opacity=".9"/><path d="M110 120 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" opacity=".7"/></g>
+      </svg>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="wrap">
+      <div><span class="big-num">2 h</span><small>pour un forfait complet</small></div>
+      <div><span class="big-num">7/7</span><small>réservation en ligne</small></div>
+      <div><span class="big-num">0 $</span><small>de frais cachés</small></div>
+      <div><span class="big-num">100 %</span><small>lavé à la main</small></div>
+    </div>
+  </div>
+</header>
+
+<section id="forfaits">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Forfaits</span>
+      <h2>Un prix clair pour votre véhicule</h2>
+      <p>Choisissez votre type de véhicule : tous les prix se mettent à jour.</p>
+    </div>
+    <div class="veh" id="veh"></div>
+    <div class="packs" id="packs"></div>
+  </div>
+</section>
+
+<section id="reserver" style="background:var(--paper);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Réservation</span>
+      <h2>Réservez en 2 minutes</h2>
+      <p>Votre prix final s'affiche avant de confirmer. Un dépôt de 20 $ garantit votre place.</p>
+    </div>
+    <div class="book">
+      <div class="panel reveal">
+        <form class="form" id="form" novalidate>
+          <div><div class="step"><b>1</b>Véhicule</div><div class="opts" id="f-veh"></div></div>
+          <div><div class="step"><b>2</b>Forfait</div><div class="opts two" id="f-pack"></div></div>
+          <div><div class="step"><b>3</b>Options</div><div class="opts four" id="f-add"></div></div>
+          <div><div class="step"><b>4</b>Où ?</div><div class="opts two" id="f-mode"></div>
+            <div id="addr-box" style="display:none;margin-top:12px"><label for="r-addr">Adresse du véhicule</label><input id="r-addr" maxlength="80" placeholder="Ex. : 1234, rue Beaubien Est" autocomplete="street-address"></div></div>
+          <div><div class="step"><b>5</b>Jour et heure</div><div class="days" id="days"></div><div class="slots" id="slots" style="margin-top:12px"></div></div>
+          <div><div class="step"><b>6</b>Vos coordonnées</div>
+            <div class="row2">
+              <div><label for="r-name">Nom</label><input id="r-name" maxlength="60" autocomplete="name"></div>
+              <div><label for="r-phone">Téléphone</label><input id="r-phone" type="tel" inputmode="tel" placeholder="(514) 555-0123" autocomplete="tel"></div>
+            </div></div>
+          <p class="err" id="form-err"></p>
+        </form>
+        <div class="confirm" id="confirm">
+          <div class="ok">✓</div>
+          <h3>C'est réservé !</h3>
+          <div class="ref" id="c-ref"></div>
+          <p id="c-text"></p>
+          <button class="btn ghost" id="c-new" type="button" style="margin-top:18px;color:var(--ink)">Nouvelle réservation</button>
+        </div>
+      </div>
+      <aside class="recap reveal" id="recap"></aside>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="head reveal"><span class="eyebrow">Questions</span><h2>Bon à savoir</h2></div>
+    <div class="faq reveal">
+      <details><summary>Faut-il de l'eau ou de l'électricité chez moi ?</summary><p>Non. Notre unité mobile a sa propre eau et sa génératrice. Il faut juste un espace pour garer le véhicule.</p></details>
+      <details><summary>Combien de temps ça prend ?</summary><p>De 45 minutes pour un lavage express à environ 2 h pour un forfait complet. La durée exacte s'affiche quand vous choisissez votre forfait.</p></details>
+      <details><summary>À quoi sert le dépôt de 20 $ ?</summary><p>Il garantit votre place et est déduit du total. Il est remboursé si vous annulez au moins 24 h à l'avance.</p></details>
+      <details><summary>Travaillez-vous l'hiver ?</summary><p>Oui ! Au garage toute l'année. À domicile, on se déplace quand il fait plus de -5 °C.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> Lustre Auto — entreprise fictive, site de démonstration</span>
+    <span>Site et chatbot par <b style="color:#fff">Givrik</b></span>
+  </div>
+</footer>
+
+<button class="fab" id="fab" aria-label="Ouvrir le clavardage">💬</button>
+<div class="chat" id="chat" role="dialog" aria-label="Assistant Lustre Auto">
+  <header><div class="av">🚗</div><div><b>Assistant Lustre</b><small>● Répond tout de suite</small></div><button id="chat-x" aria-label="Fermer">×</button></header>
+  <div class="msgs" id="msgs"></div>
+  <div class="quick" id="quick"></div>
+  <form id="chat-form"><input id="chat-in" placeholder="Posez votre question…" autocomplete="off"><button aria-label="Envoyer">➤</button></form>
+</div>
+
+<script>
+/* =========================================================
+   CONFIGURATION — pour un vrai client, on change seulement ça
+   ========================================================= */
+const SCHEDULE = {0:[9,17],1:[8,18],2:[8,18],3:[8,18],4:[8,19],5:[8,19],6:[8,17]};
+const VEHICLES = [
+  { id:'berline', label:'Berline / auto', e:'🚗', k:1 },
+  { id:'vus',     label:'VUS',            e:'🚙', k:1.2 },
+  { id:'camion',  label:'Camion / minifourgonnette', short:'Camion', e:'🛻', k:1.35 }
+];
+const PACKS = [
+  { id:'express', name:'Express',   base:39,  dur:60,  items:['Lavage extérieur à la main','Jantes et pneus','Vitres intérieures et extérieures','Aspirateur rapide'] },
+  { id:'interieur', name:'Intérieur complet', base:139, dur:120, items:['Aspirateur en profondeur','Shampooing des sièges et tapis','Plastiques nettoyés et protégés','Vitres et désodorisant'] },
+  { id:'complet', name:'Complet Showroom', base:229, dur:180, hot:true, items:['Tout l\'intérieur complet','Lavage + décontamination de la peinture','Cire protectrice 3 mois','Pneus lustrés'] },
+  { id:'ceramique', name:'Céramique', base:599, dur:300, items:['Polissage 1 étape','Protection céramique 2 ans','Effet perlant, entretien facile','Jantes protégées'] }
+];
+const ADDONS = [
+  { id:'poils',  name:'Poils d\'animaux',  price:35 },
+  { id:'odeur',  name:'Traitement d\'odeurs (ozone)', price:49 },
+  { id:'phares', name:'Restauration des phares', price:59 },
+  { id:'moteur', name:'Nettoyage du moteur', price:45 }
+];
+const MOBILE_FEE = 25, DEPOSIT = 20;
+// Ressources : baies au garage et unité mobile (le client ne choisit pas, c'est attribué tout seul)
+const BAYS = [
+  { id:'baie1',  name:'Baie 1',        mode:'garage' },
+  { id:'baie2',  name:'Baie 2',        mode:'garage' },
+  { id:'mobile', name:'Unité mobile',  mode:'domicile' }
+];
+const STEP = 30, DAYS_AHEAD = 14;
+
+/* ---------- Utilitaires ---------- */
+const $ = s => document.querySelector(s);
+const JOURS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const hhmm = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+const fmtDur = m => m < 60 ? `${m} min` : `${Math.floor(m/60)} h${m%60 ? ' ' + (m%60) : ''}`;
+const priceOf = (p, v) => Math.round(p.base * VEHICLES.find(x => x.id === v).k / 5) * 5;
+$('#year').textContent = new Date().getFullYear();
+
+const sel = { veh:'berline', pack:null, add:new Set(), mode:'garage', date:null, time:null };
+let busy = {}, stopWatch = null, submitting = false;
+const busyOf = id => busy[id] || new Set();
+const durOf = () => sel.pack ? sel.pack.dur + (sel.add.has('odeur') ? 30 : 0) : 0;
+const total = () => sel.pack ? priceOf(sel.pack, sel.veh) + [...sel.add].reduce((s, a) => s + ADDONS.find(x => x.id === a).price, 0) + (sel.mode === 'domicile' ? MOBILE_FEE : 0) : 0;
+const teamFor = wd => SCHEDULE[wd] ? BAYS.filter(b => b.mode === sel.mode) : [];
+
+/* ---------- Forfaits (vitrine) ---------- */
+function drawPacks(){
+  $('#veh').innerHTML = VEHICLES.map(v => `<button type="button" class="${v.id === sel.veh ? 'on' : ''}" data-v="${v.id}">${v.e} ${v.short || v.label}</button>`).join('');
+  $('#packs').innerHTML = PACKS.map(p => `
+    <div class="pack${p.hot ? ' hot' : ''}">${p.hot ? '<span class="flag">Le plus populaire</span>' : ''}
+      <h3>${p.name}</h3><div class="dur">Environ ${fmtDur(p.dur)}</div>
+      <div class="price">${priceOf(p, sel.veh)} $ <small>${VEHICLES.find(v => v.id === sel.veh).short || VEHICLES.find(v => v.id === sel.veh).label}</small></div>
+      <ul>${p.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      <button class="btn" type="button" data-pick="${p.id}">Choisir</button>
+    </div>`).join('');
+}
+$('#veh').onclick = e => { const b = e.target.closest('button'); if (!b) return; sel.veh = b.dataset.v; drawAll(); };
+
+/* ---------- Formulaire ---------- */
+function drawForm(){
+  $('#f-veh').innerHTML = VEHICLES.map(v => `<button type="button" class="opt${v.id === sel.veh ? ' on' : ''}" data-v="${v.id}"><b>${v.e} ${v.short || v.label}</b><small>${v.k === 1 ? 'Prix de base' : '+ ' + Math.round((v.k - 1) * 100) + ' %'}</small></button>`).join('');
+  $('#f-pack').innerHTML = PACKS.map(p => `<button type="button" class="opt${sel.pack && sel.pack.id === p.id ? ' on' : ''}" data-p="${p.id}"><b>${p.name} · ${priceOf(p, sel.veh)} $</b><small>Environ ${fmtDur(p.dur)}</small></button>`).join('');
+  $('#f-add').innerHTML = ADDONS.map(a => `<button type="button" class="opt check${sel.add.has(a.id) ? ' on' : ''}" data-a="${a.id}"><span><b>${a.name}</b><small>+ ${a.price} $</small></span></button>`).join('');
+  $('#f-mode').innerHTML = `
+    <button type="button" class="opt${sel.mode === 'garage' ? ' on' : ''}" data-m="garage"><b>🏁 Au garage</b><small>4567, rue Ontario Est</small></button>
+    <button type="button" class="opt${sel.mode === 'domicile' ? ' on' : ''}" data-m="domicile"><b>📍 À domicile</b><small>On se déplace · + ${MOBILE_FEE} $</small></button>`;
+  $('#addr-box').style.display = sel.mode === 'domicile' ? 'block' : 'none';
+}
+$('#f-veh').onclick = e => { const b = e.target.closest('.opt'); if (!b) return; sel.veh = b.dataset.v; drawAll(); };
+$('#f-pack').onclick = e => { const b = e.target.closest('.opt'); if (!b) return; sel.pack = PACKS.find(p => p.id === b.dataset.p); sel.time = null; drawAll(); renderSlots(); };
+$('#f-add').onclick = e => { const b = e.target.closest('.opt'); if (!b) return; const id = b.dataset.a; sel.add.has(id) ? sel.add.delete(id) : sel.add.add(id); sel.time = null; drawAll(); renderSlots(); };
+$('#f-mode').onclick = e => { const b = e.target.closest('.opt'); if (!b) return; sel.mode = b.dataset.m; sel.time = null; drawAll(); renderSlots(); };
+
+/* ---------- Jours & créneaux ---------- */
+const days = Array.from({length: DAYS_AHEAD}, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+$('#days').innerHTML = days.map((d, i) => `<button type="button" class="day" data-date="${ymd(d)}" ${SCHEDULE[d.getDay()] ? '' : 'disabled'}><small>${i === 0 ? 'Auj.' : JOURS[d.getDay()]}</small><b>${d.getDate()}</b></button>`).join('');
+$('#days').onclick = e => {
+  const b = e.target.closest('.day'); if (!b || b.disabled) return;
+  document.querySelectorAll('.day').forEach(x => x.classList.toggle('on', x === b));
+  sel.date = b.dataset.date; sel.time = null; busy = {}; renderSlots(true);
+  if (stopWatch) { stopWatch(); stopWatch = null; }
+  startWatch(sel.date);
+};
+function startWatch(date){
+  if (date !== sel.date) return;
+  if (!window.watchBusy) return setTimeout(() => startWatch(date), 150);
+  stopWatch = window.watchBusy(date, map => { if (date === sel.date) { busy = map; renderSlots(); } });
+}
+(function firstDay(){
+  const th = SCHEDULE[new Date().getDay()];
+  const late = !th || new Date().getHours() * 60 + new Date().getMinutes() + 120 > th[1] * 60;
+  const b = [...document.querySelectorAll('.day:not(:disabled)')].find(x => !(late && x.dataset.date === ymd(new Date())));
+  if (b) b.click();
+})();
+const needed = start => Array.from({length: Math.ceil(durOf() / STEP)}, (_, i) => hhmm(start + i * STEP));
+function renderSlots(loading){
+  const box = $('#slots'); drawRecap();
+  if (!sel.pack) { box.innerHTML = '<span class="hint">Choisissez d\'abord un forfait.</span>'; return; }
+  if (!sel.date) { box.innerHTML = '<span class="hint">Choisissez un jour.</span>'; return; }
+  if (loading) { box.innerHTML = '<span class="hint">Chargement des disponibilités…</span>'; return; }
+  const d = new Date(sel.date + 'T00:00'), [open, close] = SCHEDULE[d.getDay()], team = teamFor(d.getDay());
+  const isToday = sel.date === ymd(new Date()), nowMin = new Date().getHours() * 60 + new Date().getMinutes() + 60;
+  const out = []; let anyFree = false;
+  for (let m = open * 60; m + durOf() <= close * 60; m += STEP) {
+    if (isToday && m < nowMin) continue;
+    const t = hhmm(m), label = t.replace(':', ' h ');
+    const taken = team.every(b => busyOf(b.id).has(t));
+    const free = team.some(b => needed(m).every(x => !busyOf(b.id).has(x)));
+    if (sel.time === t && !free && !submitting) sel.time = null;
+    if (free) anyFree = true;
+    out.push(taken ? `<button type="button" class="slot taken" disabled><span>${label}</span><small>Complet</small></button>`
+                   : `<button type="button" class="slot${sel.time === t ? ' on' : ''}" data-t="${t}" ${free ? '' : 'disabled'}>${label}</button>`);
+  }
+  box.innerHTML = anyFree ? out.join('') : '<span class="hint">Complet ce jour-là. Essayez un autre jour.</span>';
+}
+$('#slots').onclick = e => { const b = e.target.closest('.slot'); if (!b || b.disabled) return; sel.time = b.dataset.t; renderSlots(); };
+
+/* ---------- Récapitulatif ---------- */
+function drawRecap(){
+  const v = VEHICLES.find(x => x.id === sel.veh);
+  if (!sel.pack) { $('#recap').innerHTML = `<h3>Votre réservation</h3><p class="empty">Choisissez un forfait pour voir le prix.</p>`; return; }
+  const d = sel.date ? new Date(sel.date + 'T00:00') : null;
+  $('#recap').innerHTML = `<h3>Votre réservation</h3>
+    <div class="line"><span>Véhicule</span><b>${v.e} ${v.short || v.label}</b></div>
+    <div class="line"><span>${sel.pack.name}</span><b>${priceOf(sel.pack, sel.veh)} $</b></div>
+    ${[...sel.add].map(a => { const x = ADDONS.find(y => y.id === a); return `<div class="line"><span>${x.name}</span><b>+ ${x.price} $</b></div>`; }).join('')}
+    ${sel.mode === 'domicile' ? `<div class="line"><span>Déplacement à domicile</span><b>+ ${MOBILE_FEE} $</b></div>` : ''}
+    <div class="line"><span>Durée</span><b>${fmtDur(durOf())}</b></div>
+    <div class="line"><span>Quand</span><b>${d ? d.toLocaleDateString('fr-CA',{weekday:'short',day:'numeric',month:'short'}) : '—'}${sel.time ? ' · ' + sel.time.replace(':',' h ') : ''}</b></div>
+    <div class="total"><span>Total (avant taxes)</span><span class="price">${total()} $</span></div>
+    <div class="dep">Dépôt de ${DEPOSIT} $ à la réservation, déduit du total. Le reste se paie sur place.</div>
+    <button class="btn" type="button" id="book-btn">Confirmer la réservation</button>`;
+  $('#book-btn').onclick = submit;
+}
+
+/* ---------- Envoi ---------- */
+$('#r-phone').addEventListener('input', e => {
+  let d = e.target.value.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); d = d.slice(0, 10);
+  e.target.value = d.length > 6 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0,3)}) ${d.slice(3)}` : d.length ? `(${d}` : '';
+  e.target.classList.remove('err');
+});
+async function submit(){
+  const err = $('#form-err'); err.style.display = 'none';
+  const name = $('#r-name').value.trim(), phone = $('#r-phone').value.trim(), addr = $('#r-addr').value.trim();
+  $('#r-name').classList.toggle('err', !name);
+  $('#r-phone').classList.toggle('err', phone.replace(/\D/g, '').length < 10);
+  $('#r-addr').classList.toggle('err', sel.mode === 'domicile' && !addr);
+  const msg = !sel.pack ? 'Choisissez un forfait.' : !sel.date || !sel.time ? 'Choisissez un jour et une heure.'
+    : sel.mode === 'domicile' && !addr ? 'Indiquez l\'adresse du véhicule.'
+    : (!name || phone.replace(/\D/g, '').length < 10) ? 'Entrez votre nom et un numéro de téléphone valide.' : '';
+  if (msg) { err.textContent = msg; err.style.display = 'block'; err.scrollIntoView({ behavior:'smooth', block:'center' }); return; }
+  const start = Number(sel.time.slice(0,2)) * 60 + Number(sel.time.slice(3)), slots = needed(start);
+  const bay = teamFor(new Date(sel.date + 'T00:00').getDay()).find(b => slots.every(x => !busyOf(b.id).has(x)));
+  if (!bay) { err.textContent = 'Ce créneau vient d\'être pris. Choisissez une autre heure.'; err.style.display = 'block'; sel.time = null; renderSlots(); return; }
+  const v = VEHICLES.find(x => x.id === sel.veh);
+  const resa = {
+    barber: bay.id, barberName: bay.name,
+    ref: Math.random().toString(36).slice(2, 6).toUpperCase(),
+    name: name.slice(0, 60), phone: phone.slice(0, 20),
+    service: sel.pack.name, options: [...sel.add].map(a => ADDONS.find(x => x.id === a).name).join(', ').slice(0, 200),
+    vehicle: v.short || v.label, mode: sel.mode === 'domicile' ? 'À domicile' : 'Au garage', address: sel.mode === 'domicile' ? addr.slice(0, 80) : '',
+    price: total(), duration: durOf(), date: sel.date, time: sel.time, slots
+  };
+  const btn = $('#book-btn'); btn.disabled = true; btn.textContent = 'Réservation…'; submitting = true;
+  try {
+    if (!window.book) throw new Error('offline');
+    await window.book(resa);
+    const d = new Date(resa.date + 'T00:00');
+    $('#c-ref').textContent = '#' + resa.ref;
+    $('#c-text').textContent = `${resa.service} (${resa.vehicle}), le ${d.toLocaleDateString('fr-CA', {weekday:'long', day:'numeric', month:'long'})} à ${resa.time.replace(':', ' h ')}${resa.mode === 'À domicile' ? ', chez vous' : ', au garage'}. Total : ${resa.price} $. On vous texte le lien pour le dépôt de ${DEPOSIT} $.`;
+    $('#form').style.display = 'none'; $('#confirm').style.display = 'block';
+    $('#confirm').scrollIntoView({ behavior:'smooth', block:'center' });
+    sel.time = null;
+  } catch (ex) {
+    console.error(ex);
+    err.textContent = ex.code === 'permission-denied' ? 'Ce créneau vient d\'être pris. Choisissez une autre heure.' : 'La réservation n\'a pas pu être envoyée. Réessayez.';
+    err.style.display = 'block'; sel.time = null;
+  } finally { submitting = false; renderSlots(); }
+}
+$('#c-new').onclick = () => { $('#confirm').style.display = 'none'; $('#form').style.display = 'grid'; sel.time = null; renderSlots(); };
+document.addEventListener('click', e => {
+  const p = e.target.closest('[data-pick]'); if (!p) return;
+  sel.pack = PACKS.find(x => x.id === p.dataset.pick); sel.time = null; drawAll(); renderSlots();
+  $('#reserver').scrollIntoView({ behavior:'smooth' });
+});
+function drawAll(){ drawPacks(); drawForm(); drawRecap(); }
+$('#form').onsubmit = e => { e.preventDefault(); submit(); };
+drawAll(); renderSlots();
+
+/* ---------- Chatbot ---------- */
+const BOT = [
+  { k:['domicile','chez moi','déplac','deplac','mobile','eau','électricité','electricite'], a:`Oui, on se déplace chez vous pour ${MOBILE_FEE} $ de plus ! Notre unité mobile a sa propre eau et sa génératrice : il faut juste un espace pour garer le véhicule.` },
+  { k:['céramique','ceramique','protection'], a:"La protection céramique (à partir de 599 $ pour une berline) protège la peinture environ 2 ans. L'eau perle et l'entretien devient beaucoup plus facile. Elle prend environ 5 h.", go:true },
+  { k:['intérieur','interieur','siège','siege','tapis','tache','shampo'], a:"L'Intérieur complet (139 $ pour une berline) comprend l'aspirateur en profondeur, le shampooing des sièges et des tapis, et le nettoyage des plastiques. Environ 2 h.", go:true },
+  { k:['poil','chien','chat','animal'], a:"On a une option « Poils d'animaux » à 35 $, à ajouter à n'importe quel forfait 🐶" },
+  { k:['odeur','fumée','fumee','sent'], a:"Le traitement à l'ozone (49 $) élimine les odeurs de fumée, de nourriture ou d'humidité. Il ajoute environ 30 min." },
+  { k:['prix','combien','coût','cout','tarif','cher'], a:"Ça dépend du véhicule. Pour une berline : Express 39 $, Intérieur complet 139 $, Complet Showroom 229 $, Céramique 599 $. Les VUS et camions coûtent un peu plus.", go:true },
+  { k:['temps','durée','duree','long'], a:"Express : environ 1 h. Intérieur complet : environ 2 h. Complet Showroom : environ 3 h. Céramique : environ 5 h." },
+  { k:['dépôt','depot','payer','paiement','annul'], a:`Un dépôt de ${DEPOSIT} $ garantit votre place et est déduit du total. Il est remboursé si vous annulez au moins 24 h à l'avance.` },
+  { k:['hiver','froid','neige','sel'], a:"Au garage, on travaille toute l'année. L'hiver, le lavage enlève le sel qui abîme la carrosserie. À domicile, on se déplace quand il fait plus de -5 °C." },
+  { k:['réserv','reserv','rendez','dispo','place'], a:"Vous pouvez réserver en 2 minutes ici. Je vous y amène 👇", go:true },
+  { k:['bonjour','salut','allo','hello','yo'], a:"Bonjour ! 🚗 Je peux vous donner les prix, les durées, ou vous aider à réserver." },
+  { k:['merci'], a:"Avec plaisir ! Au plaisir de faire briller votre véhicule ✨" }
+];
+const QUICK = ['Prix', 'À domicile ?', 'Céramique', 'Poils d\'animaux', 'Réserver'];
+let opened = false;
+function add(t, who){ const m = document.createElement('div'); m.className = 'm ' + who; m.textContent = t; $('#msgs').appendChild(m); $('#msgs').scrollTop = 1e6; }
+function reply(text){
+  add(text, 'me');
+  const ty = document.createElement('div'); ty.className = 'm bot typing'; ty.innerHTML = '<i></i><i></i><i></i>'; $('#msgs').appendChild(ty); $('#msgs').scrollTop = 1e6;
+  const hit = BOT.find(b => b.k.some(k => text.toLowerCase().includes(k)));
+  setTimeout(() => {
+    ty.remove();
+    add(hit ? hit.a : "Bonne question ! Le plus simple : appelez-nous au 514 555-0188, ou réservez en ligne et ajoutez une note.", 'bot');
+    if (hit && hit.go) {
+      const b = document.createElement('button'); b.className = 'btn'; b.style.cssText = 'align-self:flex-start;padding:9px 16px;font-size:.8rem';
+      b.textContent = 'Réserver →'; b.onclick = () => { $('#chat').classList.remove('open'); $('#reserver').scrollIntoView({ behavior:'smooth' }); };
+      $('#msgs').appendChild(b); $('#msgs').scrollTop = 1e6;
+    }
+  }, 650);
+}
+$('#quick').innerHTML = QUICK.map(x => `<button type="button">${x}</button>`).join('');
+$('#quick').onclick = e => { if (e.target.tagName === 'BUTTON') reply(e.target.textContent); };
+$('#fab').onclick = () => {
+  $('#chat').classList.toggle('open');
+  if (!opened) { opened = true; setTimeout(() => add("Salut ! 🚗 Je suis l'assistant de Lustre Auto. Prix, durée, à domicile… demandez-moi !", 'bot'), 300); }
+};
+$('#chat-x').onclick = () => $('#chat').classList.remove('open');
+$('#chat-form').onsubmit = e => { e.preventDefault(); const v = $('#chat-in').value.trim(); if (!v) return; $('#chat-in').value = ''; reply(v); };
+
+const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold:.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+<script type="module">
+/* =========================================================
+   RÉSERVATIONS
+   Tant que firebaseConfig n'est pas rempli, la démo garde les
+   réservations dans ce navigateur (localStorage) : ouvre ensuite
+   planning.html dans le même navigateur pour les voir.
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "A_REMPLACER",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
+if (firebaseConfig.apiKey === "A_REMPLACER") {
+  const KEY = 'la-resas', read = () => JSON.parse(localStorage.getItem(KEY) || '[]');
+  const mapFor = date => { const map = {}; read().filter(r => r.date === date).forEach(r => r.slots.forEach(s => (map[r.barber] = map[r.barber] || new Set()).add(s))); return map; };
+  window.watchBusy = (date, cb) => { cb(mapFor(date)); const h = e => { if (e.key === KEY) cb(mapFor(date)); }; window.addEventListener('storage', h); return () => window.removeEventListener('storage', h); };
+  window.book = async r => {
+    const all = read();
+    if (all.some(x => x.date === r.date && x.barber === r.barber && x.slots.some(s => r.slots.includes(s)))) { const e = new Error('pris'); e.code = 'permission-denied'; throw e; }
+    all.push({ ...r, id: `${r.date}_${r.barber}_${r.time}`, status: 'confirmee', createdAt: Date.now() });
+    localStorage.setItem(KEY, JSON.stringify(all));
+    window.dispatchEvent(new StorageEvent('storage', { key: KEY }));
+  };
+} else {
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js");
+  const { getFirestore, collection, query, where, onSnapshot, writeBatch, doc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js");
+  const db = getFirestore(initializeApp(firebaseConfig));
+  window.watchBusy = (date, cb) =>
+    onSnapshot(query(collection(db, 'busy'), where('date', '==', date)), snap => {
+      const map = {};
+      snap.docs.forEach(d => { const [, who, slot] = d.id.split('_'); if (who && slot) (map[who] = map[who] || new Set()).add(slot); });
+      cb(map);
+    }, err => { console.error(err); cb({}); });
+  window.book = async r => {
+    const id = `${r.date}_${r.barber}_${r.time}`, batch = writeBatch(db);
+    batch.set(doc(db, 'reservations', id), { ...r, status: 'confirmee', createdAt: serverTimestamp() });
+    r.slots.forEach(s => batch.set(doc(db, 'busy', `${r.date}_${r.barber}_${s}`), { date: r.date, barber: r.barber, res: id }));
+    await batch.commit();
+    return id;
+  };
+}
+</script>
+</body>
+</html>
