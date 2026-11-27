@@ -9,351 +9,339 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f2f3f5;--bg2:#fff;--card:#fff;--line:#dfe2e7;--gold:#e10600;--gold2:#ff3b30;--text:#111418;--muted:#8a93a0;--green:#1f9d55;--red:#b80500}
+  :root{--bg:#eef0f3;--paper:#fff;--ink:#111418;--ink2:#4d5562;--muted:#8a93a0;--line:#dfe2e7;--red:#e10600;--dark:#111418;--dark2:#1b1f25;
+        --c-confirmee:#2563eb;--c-encours:#d97706;--c-terminee:#1f9d55;--c-absent:#9aa1a7;--px:1.4px}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Barlow',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-  button{font-family:inherit;cursor:pointer}
-  h1,h2{font-family:'Barlow Condensed',sans-serif;font-weight:400;letter-spacing:.04em}
-
-  /* Connexion */
-  .login{min-height:100vh;display:grid;place-items:center;padding:20px}
-  .login form{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:40px;width:min(400px,100%);display:grid;gap:14px}
-  .login h1{font-size:2.4rem}
-  .login h1 span{color:var(--gold)}
-  .login p{color:var(--muted);font-size:.9rem;margin-top:-8px}
-  input{padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-family:inherit;font-size:1rem}
-  input:focus{outline:none;border-color:var(--gold)}
-  .btn{padding:14px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;font-weight:600;font-size:1rem}
-  .err{color:var(--red);font-size:.88rem;min-height:1.2em}
-
-  /* Agenda */
+  html,body{overflow-x:hidden;overflow-x:clip}
+  body{font-family:'Barlow',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  h1,h2,.num,.cond{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase}
+  button,input{font-family:inherit;font-size:1rem}
+  .login{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--dark)}
+  .login form{background:var(--paper);border-radius:18px;padding:36px;width:min(400px,100%);display:grid;gap:14px}
+  .login h1{font-size:2.2rem;font-style:italic}.login h1 span{color:var(--red)}
+  .login p{color:var(--muted);margin-top:-8px}
+  input{padding:13px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg)}
+  .btn{padding:13px;border-radius:10px;border:none;background:var(--red);color:#fff;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+  .err{color:var(--red);font-size:.9rem;min-height:1.2em}
   .app{display:none}
-  header{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);position:sticky;top:0;z-index:5;flex-wrap:wrap}
-  header h1{font-size:1.8rem}
-  header h1 span{color:var(--gold)}
-  .live{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)}
-  .live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 1.6s infinite}
-  .live.off i{background:var(--red);box-shadow:0 0 10px var(--red)}
-  @keyframes blink{50%{opacity:.3}}
-  .spacer{flex:1}
-  .hbtn{padding:9px 14px;border-radius:50px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:.85rem}
-  .hbtn:hover{border-color:var(--gold)}
+  header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  header h1{font-size:1.6rem;font-style:italic}header h1 span{color:var(--red)}
+  .live{font-size:.82rem;color:#7fd9a3}
+  .sp{flex:1}
+  .hb{padding:8px 14px;border-radius:8px;border:1px solid #333a44;background:transparent;color:#fff;cursor:pointer;font-size:.86rem}
+  main{max-width:1200px;margin:auto;padding:20px}
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  .bar h2{font-size:2rem;margin-right:auto}
+  .nav{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:1.1rem}
+  .today-btn{padding:9px 16px;border-radius:10px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .stat .num{font-size:2.1rem;line-height:1}
+  .stat small{color:var(--muted);font-size:.82rem}
+  .occ{display:flex;gap:6px;margin-top:8px}
+  .occ div{flex:1}
+  .occ i{display:block;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+  .occ i b{display:block;height:100%;background:var(--red)}
+  .occ span{font-size:.7rem;color:var(--muted)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--ink2);margin-bottom:10px}
+  .legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px;vertical-align:-1px}
 
-  main{max-width:900px;margin:auto;padding:24px}
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-  .stat b{font-family:'Barlow Condensed';font-size:2.4rem;color:var(--gold);display:block;line-height:1;font-weight:400}
-  .stat small{color:var(--muted);font-size:.8rem}
+  /* Grille horaire */
+  .board{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+  .grid{display:grid;grid-template-columns:58px repeat(3,minmax(220px,1fr));min-width:720px;position:relative}
+  .colh{position:sticky;top:0;background:var(--paper);z-index:3;padding:12px;border-bottom:1px solid var(--line);border-left:1px solid var(--line)}
+  .colh b{display:block;font-family:'Barlow Condensed';font-size:1.25rem;text-transform:uppercase}
+  .colh small{color:var(--muted);font-size:.78rem}
+  .corner{border-bottom:1px solid var(--line)}
+  .hours{position:relative}
+  .hours div{position:absolute;right:8px;font-size:.75rem;color:var(--muted);transform:translateY(-50%)}
+  .col{position:relative;border-left:1px solid var(--line);background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--px) * 30 - 1px),#eef0f3 calc(var(--px) * 30 - 1px),#eef0f3 calc(var(--px) * 30))}
+  .col.closed{background:repeating-linear-gradient(45deg,#f6f7f9,#f6f7f9 10px,#eef0f3 10px,#eef0f3 20px)}
+  .blk{position:absolute;left:6px;right:6px;display:flex;flex-direction:column;justify-content:flex-start;gap:1px;border-radius:10px;padding:8px 10px;background:color-mix(in srgb,var(--c) 12%,#fff);border-left:4px solid var(--c);cursor:pointer;overflow:hidden;transition:.15s;text-align:left;border-top:0;border-right:0;border-bottom:0;font:inherit;color:inherit}
+  .blk:hover{box-shadow:0 8px 20px -10px rgba(0,0,0,.35);z-index:2}
+  .blk.sel{outline:2px solid var(--c);z-index:2}
+  .blk.new{animation:flash 1s 3}
+  @keyframes flash{50%{box-shadow:0 0 0 4px var(--red)}}
+  .blk .t{font-size:.76rem;font-weight:600;color:var(--c)}
+  .blk b{display:block;font-size:.95rem;line-height:1.2}
+  .blk small{display:block;font-size:.8rem;color:var(--ink2);line-height:1.3}
+  .blk.terminee,.blk.absent{opacity:.6}
+  .now{position:absolute;left:0;right:0;height:2px;background:var(--red);z-index:4;pointer-events:none}
+  .now[data-t='']::before{display:none}
+  .now::before{content:attr(data-t);position:absolute;left:4px;top:-9px;background:var(--red);color:#fff;font-size:.68rem;font-weight:600;padding:1px 5px;border-radius:4px}
+  .empty-day{padding:40px;text-align:center;color:var(--muted)}
 
-  .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:20px}
-  .day{flex:0 0 74px;padding:10px 0;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);text-align:center;position:relative;transition:.2s}
-  .day small{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase}
-  .day b{font-family:'Barlow Condensed';font-size:1.6rem;font-weight:400;line-height:1.1}
-  .day .n{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--gold);color:#fff;font-size:.7rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
-  .day.on{background:var(--gold);color:#fff;border-color:var(--gold)}
-  .day.on small{color:#fff}
-  .day.on .n{background:#fff;color:var(--gold)}
-
-  .team{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px}
-  .tm{flex:0 0 auto;padding:9px 16px;border-radius:50px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:.88rem}
-  .tm.on{background:var(--gold);color:#fff;border-color:var(--gold);font-weight:600}
-  .tm .c{opacity:.7;margin-left:4px}
-  .chip{display:inline-block;font-size:.72rem;padding:2px 9px;border-radius:50px;background:rgba(225,6,0,.12);color:var(--gold);margin-right:6px}
-  .day-title{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
-  .day-title h2{font-size:2rem}
-  .day-title span{color:var(--muted);font-size:.9rem}
-
-  .list{display:grid;gap:12px}
-  .empty{color:var(--muted);text-align:center;padding:50px 20px;background:var(--card);border:1px dashed var(--line);border-radius:16px}
-  .rdv{display:grid;grid-template-columns:90px 1fr auto;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:16px;padding:18px;animation:in .4s cubic-bezier(.3,1.4,.5,1)}
-  .rdv.new{animation:in .4s cubic-bezier(.3,1.4,.5,1),flash 1s 3}
-  .rdv.terminee{border-left-color:var(--green);opacity:.6}
-  .rdv.absent{border-left-color:var(--red);opacity:.6}
-  .rdv.next{box-shadow:0 0 0 1px var(--gold)}
-  @keyframes in{from{opacity:0;transform:scale(.95)}}
-  @keyframes flash{50%{box-shadow:0 0 0 3px var(--gold)}}
-  .time{font-family:'Barlow Condensed';font-size:2.2rem;line-height:1;color:var(--gold)}
-  .time small{display:block;font-family:'Barlow';font-size:.75rem;color:var(--muted)}
-  .who b{font-size:1.05rem;display:block}
-  .who .svc{color:var(--muted);font-size:.88rem}
-  .who a{color:var(--text);font-size:.88rem}
-  .badge{display:inline-block;font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:50px;margin-left:6px;vertical-align:middle}
-  .badge.terminee{background:rgba(74,222,128,.15);color:var(--green)}
-  .badge.absent{background:rgba(248,113,113,.15);color:var(--red)}
-  .badge.next{background:rgba(225,6,0,.15);color:var(--gold)}
-  .actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-  .act{padding:8px 12px;border-radius:50px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:.8rem;transition:.2s}
-  .act.done:hover{border-color:var(--green);color:var(--green)}
-  .act.abs:hover{border-color:var(--red);color:var(--red)}
-  .act.del:hover,.act.del.sure{border-color:var(--red);color:#fff;background:var(--red)}
-
-  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;padding:14px 24px;border-radius:50px;font-weight:600;transition:transform .4s cubic-bezier(.3,1.4,.5,1);z-index:20;white-space:nowrap}
-  .toast.show{transform:translate(-50%,0)}
-
-  @media (max-width:640px){
-    .rdv{grid-template-columns:70px 1fr}
-    .actions{grid-column:1/-1;justify-content:flex-start}
-    .stats{grid-template-columns:repeat(3,1fr);gap:8px}
-    .stat{padding:12px}.stat b{font-size:1.8rem}
+  /* Fiche détail */
+  .sheet{position:fixed;right:0;top:0;bottom:0;width:min(400px,100%);background:var(--paper);box-shadow:-20px 0 50px -20px rgba(0,0,0,.35);z-index:30;transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}
+  .sheet.open{transform:none}
+  .sheet header{background:var(--dark);position:static}
+  .sheet header button{margin-left:auto;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer}
+  .sheet .body{padding:22px;overflow-y:auto;flex:1;display:grid;gap:14px;align-content:start}
+  .sheet .pill{display:inline-block;padding:4px 10px;border-radius:50px;color:#fff;background:var(--c);font-size:.78rem;font-weight:600}
+  .kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.94rem}
+  .kv span{color:var(--muted)}
+  .kv b{text-align:right;font-weight:600}
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .a{padding:12px;border-radius:10px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-weight:600;text-decoration:none;color:var(--ink);text-align:center;font-size:.92rem}
+  .a.main{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .a.on{background:var(--c);border-color:var(--c);color:#fff}
+  .a.del.sure{background:var(--red);border-color:var(--red);color:#fff}
+  .shade{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:25;display:none}
+  .shade.open{display:block}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140px);background:var(--dark);color:#fff;padding:13px 22px;border-radius:10px;font-weight:600;transition:.35s;z-index:40;border-left:4px solid var(--red);opacity:0;pointer-events:none}
+  .toast.show{transform:translate(-50%,0);opacity:1}
+  .demo{background:#fff4d6;color:#7a5a00;padding:10px 22px;font-size:.86rem;display:none}
+  @media (max-width:760px){
+    .stats{grid-template-columns:1fr 1fr}
+    .bar h2{font-size:1.5rem;width:100%}
+    main{padding:14px}
   }
 </style>
 </head>
 <body>
-
 <div class="login" id="login">
-  <form id="login-form">
+  <form id="lf">
     <h1>LUSTRE <span>AUTO</span></h1>
     <p>Planning de l'atelier — accès réservé</p>
-    <input type="email" id="email" placeholder="Courriel" required autocomplete="username">
-    <input type="password" id="pass" placeholder="Mot de passe" required autocomplete="current-password">
+    <input type="email" id="em" placeholder="Courriel" required autocomplete="username">
+    <input type="password" id="pw" placeholder="Mot de passe" required autocomplete="current-password">
     <div class="err" id="err"></div>
-    <button class="btn" type="submit">Se connecter</button>
+    <button class="btn">Se connecter</button>
   </form>
 </div>
 
 <div class="app" id="app">
   <header>
-    <h1>LUSTRE <span>AUTO</span> · Planning</h1>
-    <span class="live" id="live"><i></i><span>En direct</span></span>
-    <span class="spacer"></span>
-    <button class="hbtn" id="sound">🔔 Son activé</button>
-    <button class="hbtn" id="logout">Déconnexion</button>
+    <h1>LUSTRE <span>AUTO</span> · PLANNING</h1>
+    <span class="live" id="live">● En direct</span>
+    <span class="sp"></span>
+    <button class="hb" id="snd">🔔 Son activé</button>
+    <button class="hb" id="out">Déconnexion</button>
   </header>
+  <div class="demo" id="demo">Mode démo : les réservations viennent de ce navigateur seulement.</div>
   <main>
-    <div class="stats">
-      <div class="stat"><b id="s-today">0</b><small>RDV aujourd'hui</small></div>
-      <div class="stat"><b id="s-money">0 $</b><small>Prévu aujourd'hui</small></div>
-      <div class="stat"><b id="s-week">0</b><small>RDV à venir (14 jours)</small></div>
+    <div class="bar">
+      <h2 id="day-title"></h2>
+      <button class="nav" id="prev" aria-label="Jour précédent">‹</button>
+      <button class="today-btn" id="today">Aujourd'hui</button>
+      <button class="nav" id="next" aria-label="Jour suivant">›</button>
     </div>
-    <div class="team" id="team"></div>
-    <div class="days" id="days"></div>
-    <div class="day-title"><h2 id="day-name"></h2><span id="day-count"></span></div>
-    <div class="list" id="list"></div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="s-cars">0</div><small>Véhicules ce jour</small></div>
+      <div class="stat"><div class="num" id="s-money">0 $</div><small>Chiffre prévu (avant taxes)</small></div>
+      <div class="stat"><div class="num" id="s-mobile">0</div><small>Déplacements à domicile</small></div>
+      <div class="stat"><div class="num" id="s-occ">0 %</div><small>Occupation de l'atelier</small><div class="occ" id="occ"></div></div>
+    </div>
+    <div class="legend">
+      <span style="--c:var(--c-confirmee)">Confirmée</span><span style="--c:var(--c-encours)">En cours</span>
+      <span style="--c:var(--c-terminee)">Terminée</span><span style="--c:var(--c-absent)">Absent</span>
+    </div>
+    <div class="board"><div class="grid" id="grid"></div></div>
   </main>
 </div>
 
+<div class="shade" id="shade"></div>
+<aside class="sheet" id="sheet">
+  <header><h1 id="sh-title" style="font-size:1.4rem">Réservation</h1><button id="sh-x" aria-label="Fermer">×</button></header>
+  <div class="body" id="sh-body"></div>
+</aside>
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  /* Même configuration que sur index.html */
-  const firebaseConfig = {
-    apiKey: "AIzaSyDpn4Th7O8zMcpxH_KR64UMAo0juUSUR9A",
-    authDomain: "lustre-auto-d68e8.firebaseapp.com",
-    projectId: "lustre-auto-d68e8",
-    storageBucket: "lustre-auto-d68e8.firebasestorage.app",
-    messagingSenderId: "977094680108",
-    appId: "1:977094680108:web:ff7afb613f839f3eedbb89"
+/* Même configuration que sur index.html */
+const firebaseConfig = {
+  apiKey: "AIzaSyDpn4Th7O8zMcpxH_KR64UMAo0juUSUR9A",
+  authDomain: "lustre-auto-d68e8.firebaseapp.com",
+  projectId: "lustre-auto-d68e8",
+  storageBucket: "lustre-auto-d68e8.firebasestorage.app",
+  messagingSenderId: "977094680108",
+  appId: "1:977094680108:web:ff7afb613f839f3eedbb89"
+};
+const DEMO = firebaseConfig.apiKey === "A_REMPLACER";
+
+/* Même liste que sur index.html */
+const BAYS = [
+  { id:'baie1',  name:'Baie 1',       sub:'Au garage' },
+  { id:'baie2',  name:'Baie 2',       sub:'Au garage' },
+  { id:'mobile', name:'Unité mobile', sub:'À domicile' }
+];
+const SCHEDULE = {0:[9,17],1:[8,18],2:[8,18],3:[8,18],4:[8,19],5:[8,19],6:[8,17]};
+const STATUSES = [
+  { id:'confirmee', label:'Confirmée' }, { id:'encours', label:'En cours' },
+  { id:'terminee', label:'Terminée' }, { id:'absent', label:'Absent' }
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const toMin = t => Number(t.slice(0,2)) * 60 + Number(t.slice(3));
+const hhmm = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+const PX = 1.4; // pixels par minute
+
+/* ---------- Données : Firebase ou démo locale ---------- */
+let api;
+if (DEMO) {
+  const KEY = 'la-resas', read = () => JSON.parse(localStorage.getItem(KEY) || '[]');
+  const save = all => { localStorage.setItem(KEY, JSON.stringify(all)); window.dispatchEvent(new StorageEvent('storage', { key: KEY })); };
+  let authCb = null;
+  api = {
+    login: async () => { sessionStorage.setItem('la-in', '1'); authCb && authCb({}); },
+    logout: async () => { sessionStorage.removeItem('la-in'); authCb && authCb(null); },
+    onAuth: cb => { authCb = cb; setTimeout(() => cb(sessionStorage.getItem('la-in') ? {} : null)); },
+    watch: cb => { const h = e => { if (e.key === KEY) cb(read()); }; window.addEventListener('storage', h); cb(read()); return () => window.removeEventListener('storage', h); },
+    setStatus: async (id, s) => save(read().map(r => r.id === id ? { ...r, status: s } : r)),
+    cancel: async r => save(read().filter(x => x.id !== r.id))
   };
-  const DEMO = firebaseConfig.apiKey === "A_REMPLACER";
-  let initializeApp, getFirestore, collection, query, where, orderBy, onSnapshot, doc, updateDoc, writeBatch,
-      getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut;
-  if (!DEMO) {
-    ({ initializeApp } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js"));
-    ({ getFirestore, collection, query, where, orderBy, onSnapshot, doc, updateDoc, writeBatch } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js"));
-    ({ getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js"));
-  } else {
-    // Mode démo : les rendez-vous viennent de ce navigateur (localStorage), aucune vraie connexion
-    const KEY = 'la-resas', read = () => JSON.parse(localStorage.getItem(KEY) || '[]');
-    const save = all => { localStorage.setItem(KEY, JSON.stringify(all)); window.dispatchEvent(new StorageEvent('storage', { key: KEY })); };
-    let authCb = null;
-    initializeApp = getFirestore = getAuth = () => ({});
-    collection = query = where = orderBy = () => null;
-    doc = (db, col, id) => ({ col, id });
-    signInWithEmailAndPassword = async () => { sessionStorage.setItem('la-in', '1'); authCb && authCb({}); };
-    signOut = async () => { sessionStorage.removeItem('la-in'); authCb && authCb(null); };
-    onAuthStateChanged = (a, cb) => { authCb = cb; setTimeout(() => cb(sessionStorage.getItem('la-in') ? {} : null)); };
-    onSnapshot = (q, cb) => {
-      let prev = null;
-      const emit = () => {
-        const today = new Date(); today.setHours(0,0,0,0);
-        const t = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-        const list = read().filter(r => r.date >= t).sort((a, b) => a.date.localeCompare(b.date));
-        const docs = list.map(r => ({ id: r.id, data: () => r }));
-        const changes = prev ? docs.filter(d => !prev.has(d.id)).map(d => ({ type: 'added', doc: d })) : [];
-        prev = new Set(docs.map(d => d.id));
-        cb({ docs, docChanges: () => changes });
-      };
-      const h = e => { if (e.key === KEY) emit(); };
-      window.addEventListener('storage', h); emit();
-      return () => window.removeEventListener('storage', h);
-    };
-    updateDoc = async (ref, data) => save(read().map(r => r.id === ref.id ? { ...r, ...data } : r));
-    writeBatch = () => { const del = []; return { delete: ref => { if (ref.col === 'reservations') del.push(ref.id); }, commit: async () => save(read().filter(r => !del.includes(r.id))) }; };
-  }
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  const $ = s => document.querySelector(s);
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  const JOURS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  // Même liste que sur le site client (index.html)
-  const BARBERS = [
-    { id:'baie1',  name:'Baie 1' },
-    { id:'baie2',  name:'Baie 2' },
-    { id:'mobile', name:'Unité mobile' }
-  ];
-  let who = 'all';   // baie affichée : 'all' ou un id
-  const SCHEDULE = {0:[9,17],1:[8,18],2:[8,18],3:[8,18],4:[8,19],5:[8,19],6:[8,17]};
-
-  /* ---------- Connexion ---------- */
-  $('#login-form').onsubmit = async e => {
-    e.preventDefault(); $('#err').textContent = '';
-    try { await signInWithEmailAndPassword(auth, $('#email').value.trim(), $('#pass').value); }
-    catch { $('#err').textContent = 'Courriel ou mot de passe incorrect.'; }
-  };
-  $('#logout').onclick = () => signOut(auth);
-  let unsub = null;
-  onAuthStateChanged(auth, user => {
-    $('#login').style.display = user ? 'none' : 'grid';
-    $('#app').style.display = user ? 'block' : 'none';
-    if (unsub) { unsub(); unsub = null; }
-    if (user) listen();
-  });
-
-  /* ---------- Son ---------- */
-  let soundOn = true, audio;
-  $('#sound').onclick = () => { soundOn = !soundOn; $('#sound').textContent = soundOn ? '🔔 Son activé' : '🔕 Son coupé'; if (soundOn) beep(); };
-  function beep(){
-    if (!soundOn) return;
-    try {
-      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      [0, .18].forEach((t, i) => {
-        const o = audio.createOscillator(), g = audio.createGain();
-        o.frequency.value = [660, 990][i];
-        g.gain.setValueAtTime(.25, audio.currentTime + t);
-        g.gain.exponentialRampToValueAtTime(.001, audio.currentTime + t + .25);
-        o.connect(g).connect(audio.destination); o.start(audio.currentTime + t); o.stop(audio.currentTime + t + .25);
-      });
-    } catch {}
-  }
-
-  /* ---------- Réservations en direct ---------- */
-  let resas = [], first = true, selected = ymd(new Date()), added = [];
-  function listen(){
-    const q = query(collection(db, 'reservations'), where('date', '>=', ymd(new Date())), orderBy('date'));
-    unsub = onSnapshot(q, snap => {
-      $('#live').classList.remove('off'); $('#live span').textContent = 'En direct';
-      added = first ? [] : snap.docChanges().filter(c => c.type === 'added').map(c => c.doc.id);
-      resas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      render();
-      if (added.length) {
-        beep();
-        const r = resas.find(x => x.id === added[added.length - 1]);
-        const d = new Date(r.date + 'T00:00');
-        toast(`🚗 Nouvelle réservation${r.barberName ? ' avec ' + r.barberName : ''} : ${r.name}, ${JOURS[d.getDay()]} ${d.getDate()} à ${r.time.replace(':', ' h ')}`);
-      }
-      first = false;
-    }, err => {
-      console.error(err);
-      $('#live').classList.add('off'); $('#live span').textContent = 'Connexion perdue';
-    });
-  }
-
-  function render(){
-    const today = ymd(new Date());
-    // Onglets baies (avec le nombre de RDV à venir de chacun)
-    const upcoming = resas.filter(r => r.status === 'confirmee');
-    $('#team').innerHTML = [{ id:'all', name:'Tous' }, ...BARBERS].map(b => {
-      const n = b.id === 'all' ? upcoming.length : upcoming.filter(r => r.barber === b.id).length;
-      return `<button class="tm${who === b.id ? ' on' : ''}" data-who="${b.id}">${b.name}<span class="c">${n}</span></button>`;
-    }).join('');
-    const all = resas;
-    resas = who === 'all' ? all : all.filter(r => r.barber === who);
-    try { draw(today); } finally { resas = all; }
-  }
-  function draw(today){
-    const active = r => r.status !== 'absent';
-    // Statistiques
-    const todays = resas.filter(r => r.date === today && active(r));
-    $('#s-today').textContent = todays.length;
-    $('#s-money').textContent = todays.reduce((s, r) => s + Number(r.price || 0), 0) + ' $';
-    $('#s-week').textContent = resas.filter(r => r.status === 'confirmee').length;
-
-    // Barre des 14 jours
-    const days = Array.from({length: 14}, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
-    $('#days').innerHTML = days.map((d, i) => {
-      const key = ymd(d), n = resas.filter(r => r.date === key && r.status === 'confirmee').length;
-      return `<button class="day${key === selected ? ' on' : ''}" data-date="${key}" ${SCHEDULE[d.getDay()] ? '' : 'style="opacity:.35"'}>
-        <small>${i === 0 ? 'Auj.' : i === 1 ? 'Dem.' : JOURS[d.getDay()]}</small><b>${d.getDate()}</b>${n ? `<span class="n">${n}</span>` : ''}</button>`;
-    }).join('');
-
-    // Liste du jour choisi
-    const sd = new Date(selected + 'T00:00');
-    $('#day-name').textContent = selected === today ? "Aujourd'hui" : sd.toLocaleDateString('fr-CA', {weekday:'long', day:'numeric', month:'long'});
-    const list = resas.filter(r => r.date === selected).sort((a, b) => a.time.localeCompare(b.time));
-    $('#day-count').textContent = SCHEDULE[sd.getDay()]
-      ? `${list.filter(active).length} rendez-vous · ${SCHEDULE[sd.getDay()][0]} h – ${SCHEDULE[sd.getDay()][1]} h`
-      : 'Fermé';
-    const nowT = `${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}`;
-    const next = selected === today ? list.find(r => r.status === 'confirmee' && r.time >= nowT) : null;
-
-    $('#list').innerHTML = list.length ? list.map(r => {
-      const end = (() => { const m = Number(r.time.slice(0,2)) * 60 + Number(r.time.slice(3)) + Number(r.duration || 30); return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; })();
-      const badge = r.status === 'terminee' ? '<span class="badge terminee">Terminé</span>'
-                  : r.status === 'absent' ? '<span class="badge absent">Absent</span>'
-                  : next && next.id === r.id ? '<span class="badge next">Prochain</span>' : '';
-      const actions = r.status === 'confirmee'
-        ? `<button class="act done" data-id="${r.id}" data-s="terminee">✓ Terminé</button>
-           <button class="act abs" data-id="${r.id}" data-s="absent">Absent</button>
-           <button class="act del" data-del="${r.id}">Annuler</button>`
-        : `<button class="act" data-id="${r.id}" data-s="confirmee">↺ Rétablir</button>`;
-      return `<article class="rdv ${r.status}${next && next.id === r.id ? ' next' : ''}${added.includes(r.id) ? ' new' : ''}">
-        <div class="time">${esc(r.time.replace(':', 'h'))}<small>→ ${end.replace(':', 'h')}</small></div>
-        <div class="who"><b>${esc(r.name)}${badge}</b>
-          <span class="svc">${r.barberName && who === 'all' ? `<span class="chip">🔧 ${esc(r.barberName)}</span>` : ''}${esc(r.service)} · ${Number(r.price)} $ · #${esc(r.ref)}</span><br>
-          <span class="svc">🚗 ${esc(r.vehicle || '')}${r.options ? ' · + ' + esc(r.options) : ''} · ${esc(r.mode || '')}${r.address ? ' : <a href="https://maps.google.com/?q=' + encodeURIComponent(r.address) + '" target="_blank" rel="noopener">' + esc(r.address) + '</a>' : ''}</span><br>
-          <a href="tel:${esc(r.phone)}">📞 ${esc(r.phone)}</a></div>
-        <div class="actions">${actions}</div>
-      </article>`;
-    }).join('') : `<div class="empty">${SCHEDULE[sd.getDay()] ? 'Aucun rendez-vous pour ce jour.' : 'Le salon est fermé ce jour-là.'}</div>`;
-  }
-
-  $('#team').onclick = e => {
-    const b = e.target.closest('.tm'); if (!b) return;
-    who = b.dataset.who; added = []; render();
-  };
-  $('#days').onclick = e => {
-    const b = e.target.closest('.day'); if (!b) return;
-    selected = b.dataset.date; added = []; render();
-  };
-
-  /* ---------- Actions ---------- */
-  document.addEventListener('click', async e => {
-    // Changer le statut
-    const s = e.target.closest('[data-s]');
-    if (s) {
-      s.disabled = true;
-      try { await updateDoc(doc(db, 'reservations', s.dataset.id), { status: s.dataset.s }); }
-      catch (err) { console.error(err); toast('Erreur : action impossible.'); s.disabled = false; }
-      return;
+  $('#demo').style.display = 'block';
+} else {
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js");
+  const fs = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js");
+  const au = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js");
+  const app = initializeApp(firebaseConfig), db = fs.getFirestore(app), auth = au.getAuth(app);
+  api = {
+    login: (e, p) => au.signInWithEmailAndPassword(auth, e, p),
+    logout: () => au.signOut(auth),
+    onAuth: cb => au.onAuthStateChanged(auth, cb),
+    watch: cb => {
+      const from = new Date(); from.setDate(from.getDate() - 7);
+      return fs.onSnapshot(fs.query(fs.collection(db, 'reservations'), fs.where('date', '>=', ymd(from)), fs.orderBy('date')),
+        snap => cb(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+        err => { console.error(err); $('#live').textContent = '● Connexion perdue'; $('#live').style.color = '#f87171'; });
+    },
+    setStatus: (id, s) => fs.updateDoc(fs.doc(db, 'reservations', id), { status: s }),
+    cancel: async r => {
+      const b = fs.writeBatch(db);
+      b.delete(fs.doc(db, 'reservations', r.id));
+      (r.slots || [r.time]).forEach(t => b.delete(fs.doc(db, 'busy', `${r.date}_${r.barber}_${t}`)));
+      await b.commit();
     }
-    // Annuler (2 clics pour confirmer) : supprime le RDV et libère ses créneaux
-    const d = e.target.closest('[data-del]');
-    if (d) {
-      if (!d.classList.contains('sure')) {
-        d.classList.add('sure'); d.textContent = 'Confirmer ?';
-        setTimeout(() => { d.classList.remove('sure'); d.textContent = 'Annuler'; }, 3000);
-        return;
-      }
-      const r = resas.find(x => x.id === d.dataset.del);
-      try {
-        const batch = writeBatch(db);
-        batch.delete(doc(db, 'reservations', r.id));
-        (r.slots || [r.time]).forEach(t => batch.delete(doc(db, 'busy', r.barber ? `${r.date}_${r.barber}_${t}` : `${r.date}_${t}`)));
-        await batch.commit();
-        toast('Rendez-vous annulé, le créneau est de nouveau libre.');
-      } catch (err) { console.error(err); toast('Erreur : annulation impossible.'); }
+  };
+}
+
+/* ---------- Connexion ---------- */
+let resas = [], day = ymd(new Date()), first = true, fresh = [], openId = null, stop = null, soundOn = true, ctx;
+function show(on){
+  $('#login').style.display = on ? 'none' : 'grid';
+  $('#app').style.display = on ? 'block' : 'none';
+  if (stop) { stop(); stop = null; }
+  if (on) stop = api.watch(list => {
+    fresh = first ? [] : list.filter(x => !resas.some(r => r.id === x.id)).map(x => x.id);
+    resas = list; render();
+    if (fresh.length) {
+      const r = list.find(x => x.id === fresh[0]), d = new Date(r.date + 'T00:00');
+      beep(); toast(`🚗 Nouvelle réservation : ${r.service} · ${r.vehicle} · ${d.toLocaleDateString('fr-CA',{weekday:'short',day:'numeric'})} ${r.time.replace(':',' h ')}`);
     }
+    first = false;
   });
+}
+$('#lf').onsubmit = async e => {
+  e.preventDefault(); $('#err').textContent = '';
+  try { await api.login($('#em').value.trim(), $('#pw').value); }
+  catch { $('#err').textContent = 'Courriel ou mot de passe incorrect.'; }
+};
+$('#out').onclick = () => api.logout();
+api.onAuth(u => show(!!u));
 
-  setInterval(() => { added = []; if (resas.length) render(); }, 60000);
+/* ---------- Grille du jour ---------- */
+function render(){
+  const d = new Date(day + 'T00:00'), hours = SCHEDULE[d.getDay()];
+  $('#day-title').textContent = day === ymd(new Date()) ? "Aujourd'hui · " + d.toLocaleDateString('fr-CA',{day:'numeric',month:'long'})
+    : d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long'});
+  const list = resas.filter(r => r.date === day);
+  const active = list.filter(r => r.status !== 'absent');
 
-  function toast(t){
-    const el = $('#toast'); el.textContent = t; el.classList.add('show');
-    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 3500);
+  // Statistiques
+  $('#s-cars').textContent = active.length;
+  $('#s-money').textContent = active.reduce((s, r) => s + Number(r.price || 0), 0).toLocaleString('fr-CA') + ' $';
+  $('#s-mobile').textContent = active.filter(r => r.barber === 'mobile').length;
+  const open = hours ? (hours[1] - hours[0]) * 60 : 0;
+  const occBay = BAYS.map(b => open ? Math.min(100, Math.round(active.filter(r => r.barber === b.id).reduce((s, r) => s + Number(r.duration || 30), 0) / open * 100)) : 0);
+  const garage = BAYS.map((b, i) => [b, occBay[i]]).filter(([b]) => b.id !== 'mobile');
+  $('#s-occ').textContent = (garage.length ? Math.round(garage.reduce((s, [, v]) => s + v, 0) / garage.length) : 0) + ' %';
+  $('#occ').innerHTML = BAYS.map((b, i) => `<div><i><b style="width:${occBay[i]}%"></b></i><span>${b.name} ${occBay[i]} %</span></div>`).join('');
+
+  // Grille
+  if (!hours) { $('#grid').innerHTML = `<div class="empty-day" style="grid-column:1/-1">L'atelier est fermé ce jour-là.</div>`; return; }
+  const start = hours[0] * 60, end = hours[1] * 60, h = (end - start) * PX;
+  let html = `<div class="corner"></div>` + BAYS.map(b => {
+    const n = active.filter(r => r.barber === b.id).length;
+    return `<div class="colh"><b>${b.name}</b><small>${b.sub} · ${n} véhicule${n > 1 ? 's' : ''}</small></div>`;
+  }).join('');
+  html += `<div class="hours" style="height:${h}px">${Array.from({length: hours[1] - hours[0] + 1}, (_, i) => `<div style="top:${i * 60 * PX}px">${hours[0] + i} h</div>`).join('')}</div>`;
+  const now = new Date(), nm = now.getHours() * 60 + now.getMinutes();
+  const nowLine = day === ymd(now) && nm >= start && nm <= end ? (i => `<div class="now" data-t="${i === 0 ? hhmm(nm).replace(':','h') : ''}" style="top:${(nm - start) * PX}px"></div>`) : () => '';
+  html += BAYS.map((b, i) => `<div class="col" style="height:${h}px">${nowLine(i)}${list.filter(r => r.barber === b.id).map(r => {
+    const top = (toMin(r.time) - start) * PX, hgt = Math.max(Number(r.duration || 30) * PX - 4, 40);
+    const endT = hhmm(toMin(r.time) + Number(r.duration || 30));
+    return `<button class="blk ${esc(r.status)}${fresh.includes(r.id) ? ' new' : ''}${openId === r.id ? ' sel' : ''}" data-id="${esc(r.id)}" style="top:${top + 2}px;height:${hgt}px;--c:var(--c-${esc(r.status)})">
+      <span class="t">${r.time.replace(':','h')} – ${endT.replace(':','h')} · ${Number(r.price)} $</span>
+      <b>${esc(r.service)}</b>
+      <small>🚗 ${esc(r.vehicle)} · ${esc(r.name)}</small>
+      ${r.options ? `<small>+ ${esc(r.options)}</small>` : ''}
+      ${r.address ? `<small>📍 ${esc(r.address)}</small>` : ''}
+    </button>`;
+  }).join('')}</div>`).join('');
+  $('#grid').innerHTML = html;
+  if (openId) { const r = resas.find(x => x.id === openId); r ? drawSheet(r) : closeSheet(); }
+}
+const moveDay = n => { const d = new Date(day + 'T00:00'); d.setDate(d.getDate() + n); day = ymd(d); fresh = []; render(); };
+$('#prev').onclick = () => moveDay(-1);
+$('#next').onclick = () => moveDay(1);
+$('#today').onclick = () => { day = ymd(new Date()); render(); };
+setInterval(() => { fresh = []; if ($('#app').style.display === 'block') render(); }, 60000);
+
+/* ---------- Fiche d'une réservation ---------- */
+$('#grid').onclick = e => { const b = e.target.closest('.blk'); if (!b) return; openId = b.dataset.id; drawSheet(resas.find(r => r.id === openId)); render(); };
+function drawSheet(r){
+  const st = STATUSES.find(s => s.id === r.status) || STATUSES[0], bay = BAYS.find(b => b.id === r.barber);
+  const d = new Date(r.date + 'T00:00');
+  $('#sh-title').textContent = `#${r.ref} · ${r.time.replace(':',' h ')}`;
+  $('#sh-body').innerHTML = `
+    <div><span class="pill" style="--c:var(--c-${st.id})">${st.label}</span></div>
+    <div>
+      <div class="kv"><span>Client</span><b>${esc(r.name)}</b></div>
+      <div class="kv"><span>Téléphone</span><b>${esc(r.phone)}</b></div>
+      <div class="kv"><span>Forfait</span><b>${esc(r.service)}</b></div>
+      ${r.options ? `<div class="kv"><span>Options</span><b>${esc(r.options)}</b></div>` : ''}
+      <div class="kv"><span>Véhicule</span><b>${esc(r.vehicle)}</b></div>
+      <div class="kv"><span>Où</span><b>${esc(bay ? bay.name : r.barber)}${r.address ? '<br>' + esc(r.address) : ''}</b></div>
+      <div class="kv"><span>Quand</span><b>${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long'})}<br>${r.time.replace(':',' h ')} → ${hhmm(toMin(r.time) + Number(r.duration || 30)).replace(':',' h ')}</b></div>
+      <div class="kv"><span>Total</span><b>${Number(r.price)} $</b></div>
+    </div>
+    <div class="acts">
+      <a class="a main" href="tel:${esc(r.phone)}">📞 Appeler</a>
+      ${r.address ? `<a class="a main" href="https://maps.google.com/?q=${encodeURIComponent(r.address)}" target="_blank" rel="noopener">🗺️ Itinéraire</a>` : `<a class="a" href="sms:${esc(r.phone)}">💬 Texto</a>`}
+    </div>
+    <div class="acts">${STATUSES.map(s => `<button class="a${s.id === r.status ? ' on' : ''}" style="--c:var(--c-${s.id})" data-s="${s.id}">${s.label}</button>`).join('')}</div>
+    <button class="a del" id="del">Annuler la réservation</button>`;
+  $('#sheet').classList.add('open'); $('#shade').classList.add('open');
+}
+function closeSheet(){ openId = null; $('#sheet').classList.remove('open'); $('#shade').classList.remove('open'); render(); }
+$('#sh-x').onclick = closeSheet; $('#shade').onclick = closeSheet;
+$('#sh-body').onclick = async e => {
+  const r = resas.find(x => x.id === openId); if (!r) return;
+  const s = e.target.closest('[data-s]');
+  if (s) { s.disabled = true; try { await api.setStatus(r.id, s.dataset.s); } catch (err) { console.error(err); toast('Erreur : action impossible.'); } return; }
+  const d = e.target.closest('#del');
+  if (d) {
+    if (!d.classList.contains('sure')) { d.classList.add('sure'); d.textContent = 'Confirmer l\'annulation ?'; setTimeout(() => { d.classList.remove('sure'); d.textContent = 'Annuler la réservation'; }, 3000); return; }
+    try { await api.cancel(r); toast('Réservation annulée, le créneau est libre.'); closeSheet(); }
+    catch (err) { console.error(err); toast('Erreur : annulation impossible.'); }
   }
+};
+
+/* ---------- Son & notifications ---------- */
+$('#snd').onclick = () => { soundOn = !soundOn; $('#snd').textContent = soundOn ? '🔔 Son activé' : '🔕 Son coupé'; if (soundOn) beep(); };
+function beep(){
+  if (!soundOn) return;
+  try {
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    [0, .18].forEach((t, i) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = [660, 990][i];
+      g.gain.setValueAtTime(.25, ctx.currentTime + t); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + t + .25);
+      o.connect(g).connect(ctx.destination); o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + .25); });
+  } catch {}
+}
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 4000); }
 </script>
 </body>
 </html>
