@@ -304,7 +304,7 @@
 <footer>
   <div class="wrap">
     <span>© <span id="year"></span> Lustre Auto — entreprise fictive, site de démonstration</span>
-    <span>Site et chatbot par <b style="color:#fff">Givrik</b></span>
+    <span>Site et chatbot par <b style="color:#fff">Givrik</b> · <a href="politique-confidentialite.html" style="color:inherit;opacity:.8">Confidentialité</a></span>
   </div>
 </footer>
 
@@ -452,7 +452,8 @@ function drawRecap(){
     <div class="line"><span>Quand</span><b>${d ? d.toLocaleDateString('fr-CA',{weekday:'short',day:'numeric',month:'short'}) : '—'}${sel.time ? ' · ' + sel.time.replace(':',' h ') : ''}</b></div>
     <div class="total"><span>Total (avant taxes)</span><span class="price">${total()} $</span></div>
     <div class="dep">Dépôt de ${DEPOSIT} $ à la réservation, déduit du total. Le reste se paie sur place.</div>
-    <button class="btn" type="button" id="book-btn">Confirmer la réservation</button>`;
+    <button class="btn" type="button" id="book-btn">Confirmer la réservation</button>
+<p class="privacy-note" style="color:#8a93a0;font-size:.78rem;text-align:center;margin-top:8px">Vos coordonnées servent seulement à tester ce site de démonstration. <a href="politique-confidentialite.html" style="color:inherit;text-decoration:underline">Politique de confidentialité</a></p>`;
   $('#book-btn').onclick = submit;
 }
 
